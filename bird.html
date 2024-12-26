@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flying Bird with Color Trail</title>
+  <style>
+    /* Styling the Sky */
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #87ceeb; /* Sky blue */
+    }
+
+    #sky {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Styling the Bird */
+    .bird {
+      position: absolute;
+      width: 50px;
+      height: 30px;
+      background: url('https://i.imgur.com/4FYtp.png'); /* Replace with your own bird icon */
+      background-size: cover;
+      animation: fly 8s linear infinite;
+    }
+
+    /* Flying animation */
+    @keyframes fly {
+      0% {
+        transform: translate(-100px, 100px) scale(1);
+      }
+      25% {
+        transform: translate(50vw, 30vh) scale(1.2);
+      }
+      50% {
+        transform: translate(80vw, 60vh) scale(1);
+      }
+      75% {
+        transform: translate(40vw, 10vh) scale(0.8);
+      }
+      100% {
+        transform: translate(-100px, 100px) scale(1);
+      }
+    }
+
+    /* Styling the Color Trail */
+    .color {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: fade 3s ease-out;
+    }
+
+    /* Color fading animation */
+    @keyframes fade {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="sky">
+    <div class="bird"></div>
+  </div>
+  <script>
+    const sky = document.getElementById('sky');
+    const bird = document.querySelector('.bird');
+
+    // Function to create a color trail
+    function createTrail(x, y) {
+      const trail = document.createElement('div');
+      trail.className = 'color';
+      trail.style.left = `${x}px`;
+      trail.style.top = `${y}px`;
+      trail.style.backgroundColor = getRandomColor();
+      sky.appendChild(trail);
+
+      // Remove the trail after the animation
+      setTimeout(() => trail.remove(), 3000);
+    }
+
+    // Function to generate random colors
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    // Update bird position and create a trail
+    setInterval(() => {
+      const rect = bird.getBoundingClientRect();
+      createTrail(rect.left + 25, rect.top + 15);
+    }, 100);
+  </script>
+</body>
+</html>
